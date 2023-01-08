@@ -8,7 +8,6 @@ import axios from "axios";
 import {DarkTheme, NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {AuthorPage} from "../AuthorPage";
-import { createStackNavigator } from '@react-navigation/stack';
 
 interface KeycloakLoginComponentProps  {
     issuer:string,
@@ -44,7 +43,8 @@ export const KeycloakLoginComponent:FC<KeycloakLoginComponentProps> = ({issuer,r
 
     useEffect( () => {
         if (response?.type === 'success' && discovery && request) {
-            exchangeCodeAsync({code: response?.params.code, redirectUri, clientId: clientId, extraParams:{code_verifier: request.codeVerifier as string}}, discovery)
+            exchangeCodeAsync({code: response?.params.code, redirectUri, clientId: clientId,
+                extraParams:{code_verifier: request.codeVerifier as string}}, discovery)
                 .then((resp) => {
                         axios.defaults.headers["Authorization"] = `Bearer ${resp.accessToken}`
                         axios.defaults.headers['Content-Type']  = 'application/json'

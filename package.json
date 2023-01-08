@@ -26,6 +26,7 @@
     "native-base": "3.4.25"
   },
   "devDependencies": {
+    "expo": "^47.0.12",
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
