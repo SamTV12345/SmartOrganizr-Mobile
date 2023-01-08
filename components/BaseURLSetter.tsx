@@ -20,6 +20,7 @@ export const BaseURLSetter = () => {
     const getPublicURL = async () => {
         axios.get(loginURL+"/api/public")
             .then((resp:AxiosResponse<PublicModel>) => {
+                console.log(resp.data)
                 dispatch(setKeycloakConfig(resp.data))
                 setStorageKey("public-url",loginURL)
             })

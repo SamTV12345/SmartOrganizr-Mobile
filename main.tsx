@@ -1,9 +1,10 @@
 import {BaseURLSetter} from "./components/BaseURLSetter";
-import React from "react";
+import React, {useEffect} from "react";
 import {useAppSelector} from "./store/hooks";
 import {View} from "native-base";
-import {StyleSheet} from "react-native";
+import {StyleSheet, Text} from "react-native";
 import {KeycloakLoginComponent} from "./components/KeycloakLoginComponent";
+import {ReactNativeKeycloakProvider, RNKeycloak} from "@react-keycloak/native";
 
 export const Main = ()=>{
     const keycloakConfig = useAppSelector(state => state.commonReducer.keycloakConfig)
@@ -21,15 +22,20 @@ export const Main = ()=>{
         }
     })
 
-    return <View style={styles.widthHeigh}>
+    const keycloak= new RNKeycloak({url:"https://pihole.schwanzer.online", clientId: 'website', realm:'master'})
+
+    return <ReactNativeKeycloakProvider authClient={keycloak} initOptions={{redirectUri:'myApp://Homepage'}}>
+        <View style={styles.widthHeigh}>
         {!keycloakConfig&&<View style={styles.fullScreen}
                  _dark={{ bg: "black" }}
                  _light={{ bg: "blueGray.50" }}>
         <BaseURLSetter />
     </View>}
-        {keycloakConfig
+        {keycloakConfig && keycloakConfig.url
             !==undefined
-            &&<KeycloakLoginComponent issuer={keycloakConfig.url} clientId={keycloakConfig.clientId} realm={keycloakConfig.realm}/>
+            &&
+                <KeycloakLoginComponent issuer={keycloakConfig.url} clientId={keycloakConfig.clientId} realm={keycloakConfig.realm}/>
         }
-        </View>
+    </View>
+    </ReactNativeKeycloakProvider>
 }

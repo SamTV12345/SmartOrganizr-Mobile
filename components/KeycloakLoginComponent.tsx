@@ -5,6 +5,9 @@ import {DarkTheme, NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {AuthorPage} from "../AuthorPage";
 import { login } from "../utils/doLogin";
+import {ReactNativeKeycloakProvider, RNKeycloak, useKeycloak} from "@react-keycloak/native";
+import InAppBrowser from "react-native-inappbrowser-reborn";
+import {setAccessToken} from "../slices/CommonSlice";
 
 interface KeycloakLoginComponentProps  {
     issuer:string,
@@ -15,12 +18,25 @@ interface KeycloakLoginComponentProps  {
 
 export const KeycloakLoginComponent:FC<KeycloakLoginComponentProps> = ({issuer,realm,clientId})=>{
     const accessToken = useAppSelector(state=>state.commonReducer.accessToken)
+    const {keycloak} = useKeycloak()
+    const dispatch = useAppDispatch()
 
     useEffect(()=>{
-        if(accessToken.length==0){
-            login(issuer)
+        console.log(keycloak)
+        doLogin()
+    },[keycloak])
+
+    const doLogin  =async () => {
+        if (keycloak && keycloak) {
+            const res  = await InAppBrowser.isAvailable()
+            if (res) {
+                keycloak.login().then(c=>{
+                    console.log(keycloak.token)
+                    dispatch(setAccessToken(keycloak.token as string))
+                })
+            }
         }
-    },[])
+    }
 
     function SettingsScreen() {
         return (
@@ -39,12 +55,17 @@ export const KeycloakLoginComponent:FC<KeycloakLoginComponentProps> = ({issuer,r
     }
 
     useEffect(()=>{
+        if(accessToken.length!==0){
+            console.log("Access token nicht 0")
+        }
+        console.log("Access Token ist"+ accessToken.length)
         console.log(accessToken)
     }, [accessToken])
 
     const Tab = createBottomTabNavigator();
 
-    return  <NavigationContainer theme={DarkTheme}>
+
+    return <NavigationContainer theme={DarkTheme}>
             <Tab.Navigator>
                 <Tab.Screen name="Autor*in" component={AuthorPage}  />
                 <Tab.Screen name="Settings" component={SettingsScreen} />
