@@ -5,16 +5,16 @@ import {PublicModel} from "../models/PublicModel";
 import axios, {AxiosResponse} from "axios";
 import {getStorageKey, setStorageKey} from "../storage/SetStorageKey";
 import {useAppDispatch, useAppSelector} from "../store/hooks";
-import {setKeycloakConfig} from "../slices/CommonSlice";
+import {setKeycloakConfig, setLoginURL} from "../slices/CommonSlice";
 
 export const BaseURLSetter = () => {
     const keycloakConfig = useAppSelector(state => state.commonReducer.keycloakConfig)
-    const [loginURL, setLoginURL] = React.useState("");
+    const loginURL = useAppSelector(state=>state.commonReducer.loginURL)
     const dispatch = useAppDispatch()
 
     useEffect(()=>{
         getStorageKey("public-url").then((value) => {
-                value&&setLoginURL(value);
+                value&&dispatch(setLoginURL(value))
             }
         )}, [])
     const getPublicURL = async () => {
@@ -36,7 +36,7 @@ export const BaseURLSetter = () => {
             <FormControl isRequired>
                 <Stack mx="4">
                     <FormControl.Label>URL zur SmartOrganizr Plattform</FormControl.Label>
-                    <Input type="text" value={loginURL} onChangeText={(v)=>setLoginURL(v)} placeholder="https://smartorganizr.com" />
+                    <Input type="text" value={loginURL} onChangeText={(v)=>dispatch(setLoginURL(v))} placeholder="https://smartorganizr.com" />
                 </Stack>
             </FormControl>
             <Button disabled={loginURL===undefined || loginURL===null} onPress={()=>getPublicURL()}>Test</Button>

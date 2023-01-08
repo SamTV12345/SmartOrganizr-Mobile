@@ -22,6 +22,7 @@ import {Author} from "../models/Author";
 import {AuthorPatchDto} from "../models/AuthorPatchDto";
 import {setAuthorPage} from "../slices/CommonSlice";
 import {mergeAuthorInList} from "../utils/AuthorUtilList";
+import {fixProtocol} from "../utils/ProtocolUtils";
 
 interface DetailAuthorViewProps {
     route: any,
@@ -39,7 +40,7 @@ export const DetailAuthorView:FC<DetailAuthorViewProps> = ({ route, navigation }
             return
         }
         const authorsInResponse: NoteItem[] = await new Promise<NoteItem[]>(resolve => {
-            axios.get(baseURL+`/authors/${selectedAuthorId}/notes`)
+            axios.get(fixProtocol(baseURL)+`/authors/${selectedAuthorId}/notes`)
                 .then(resp => resolve(resp.data))
                 .catch((error) => {
                     console.log(error)

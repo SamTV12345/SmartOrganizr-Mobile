@@ -9,8 +9,8 @@ import {mergeAuthors} from "./utils/AuthorUtilList";
 import {View, FlatList} from "react-native";
 import {ListItem} from "./components/ListItem";
 import {createStackNavigator} from "@react-navigation/stack";
-import {NavigationState} from "@react-navigation/native";
 import {DetailAuthorView} from "./components/DetailAuthorView";
+import {fixProtocol} from "./utils/ProtocolUtils";
 
 
 interface AuthorPageProps {
@@ -22,7 +22,7 @@ export const AuthorPage = () => {
     const dispatch = useAppDispatch()
     const keycloakConfig = useAppSelector(state => state.commonReducer.keycloakConfig)
     const accessToken = useAppSelector(state => state.commonReducer.accessToken)
-
+    const loginURL = useAppSelector(state=>state.commonReducer.loginURL)
     const Stack = createStackNavigator();
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export const AuthorPage = () => {
 
     const loadAuthors = async (link: string) => {
         const authorsInResponse: Page<AuthorEmbeddedContainer<Author>> = await new Promise<Page<AuthorEmbeddedContainer<Author>>>(resolve => {
-            axios.get(link)
+            axios.get(fixProtocol(link))
                 .then(resp => resolve(resp.data))
                 .catch((error) => {
                     console.log(error)

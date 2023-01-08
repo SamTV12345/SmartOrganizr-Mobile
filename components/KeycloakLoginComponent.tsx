@@ -4,10 +4,10 @@ import {useAppDispatch, useAppSelector} from "../store/hooks";
 import {DarkTheme, NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {AuthorPage} from "../AuthorPage";
-import { login } from "../utils/doLogin";
 import {ReactNativeKeycloakProvider, RNKeycloak, useKeycloak} from "@react-keycloak/native";
 import InAppBrowser from "react-native-inappbrowser-reborn";
 import {setAccessToken} from "../slices/CommonSlice";
+import axios from "axios";
 
 interface KeycloakLoginComponentProps  {
     issuer:string,
@@ -27,11 +27,13 @@ export const KeycloakLoginComponent:FC<KeycloakLoginComponentProps> = ({issuer,r
     },[keycloak])
 
     const doLogin  =async () => {
-        if (keycloak && keycloak) {
+        if (keycloak && !keycloak.token) {
             const res  = await InAppBrowser.isAvailable()
             if (res) {
-                keycloak.login().then(c=>{
+                keycloak.login().then(c=> {
                     console.log(keycloak.token)
+                    axios.defaults.headers['Authorization'] = `Bearer ${keycloak.token}`
+                    axios.defaults.headers['Content-Type'] = 'application/json'
                     dispatch(setAccessToken(keycloak.token as string))
                 })
             }
