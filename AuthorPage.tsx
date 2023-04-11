@@ -49,8 +49,9 @@ export const AuthorPage = () => {
   const loadAuthors = async (link: string) => {
     const authorsInResponse: Page<AuthorEmbeddedContainer<Author>> =
       await new Promise<Page<AuthorEmbeddedContainer<Author>>>(resolve => {
+        console.log(link)
         axios
-          .get(fixProtocol(link))
+          .get(fixProtocol(link.replace("?page=0","/authors?page=0")))
           .then(resp => resolve(resp.data))
           .catch(error => {
             console.log(error);

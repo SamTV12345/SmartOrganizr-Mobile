@@ -41,11 +41,11 @@ export const Main = () => {
     }
   }, [keycloakConfig]);
 
-  console.log(keycloakConfig?.clientId);
+  // this pattern is required to load the app. Register this as a redirect uri.
   return (
     <ReactNativeKeycloakProvider
       authClient={state}
-      initOptions={{redirectUri: 'smartorganizr://oauth2/redirect'}}>
+      initOptions={{redirectUri: 'smartorganizr-mobile://Homepage'}}>
       <View style={styles.widthHeigh}>
         {!keycloakConfig && (
           <View
