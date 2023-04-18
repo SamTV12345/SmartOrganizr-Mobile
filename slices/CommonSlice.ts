@@ -3,7 +3,9 @@ import {PublicModel} from "../models/PublicModel";
 import {Page} from "../models/Page";
 import {AuthorEmbeddedContainer} from "../models/AuthorEmbeddedContainer";
 import {Author} from "../models/Author";
-import {ReactNativeKeycloakProvider, RNKeycloak} from "@react-keycloak/native";
+import {RNKeycloak} from "@react-keycloak/native";
+import {NoteItem} from "../models/NoteItem";
+import {ElementEmbeddedContainer} from "../models/ElementEmbeddedContainer";
 
 interface CommonProps {
     accessToken: string,
@@ -12,7 +14,8 @@ interface CommonProps {
     baseURL:string,
     keycloak:  string,
     loginURL: string,
-    authorSearchText:string
+    authorSearchText:string,
+    elementsSearched: Page<ElementEmbeddedContainer<NoteItem>>| undefined
 }
 
 const initialState: CommonProps = {
@@ -22,7 +25,8 @@ const initialState: CommonProps = {
     baseURL:'',
     keycloak: JSON.stringify(new RNKeycloak({realm: "master", url:"", clientId:'website'})),
     loginURL:'',
-    authorSearchText: ''
+    authorSearchText: '',
+    elementsSearched: undefined
 }
 
 export const CommonSlice = createSlice({
@@ -47,10 +51,13 @@ export const CommonSlice = createSlice({
             },
             setAuthorSearchText: (state, action:PayloadAction<string>)=>{
                 state.authorSearchText = action.payload
+            },
+            setNotesSearched:(state, action)=>{
+                state.elementsSearched = action.payload
             }
         }
 })
 
 
-export const {setAccessToken, setAuthorSearchText, setKeycloakConfig, setAuthorPage, setBaseURL, setLoginURL} = CommonSlice.actions
+export const {setAccessToken,setNotesSearched, setAuthorSearchText, setKeycloakConfig, setAuthorPage, setBaseURL, setLoginURL} = CommonSlice.actions
 export default CommonSlice.reducer

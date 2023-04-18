@@ -13,6 +13,7 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {ScrollView, Text} from "native-base";
 import ListItem from "./components/ListItem";
 import {SearchBarHeader} from "./components/SearchBarHeader";
+import {DetailNoteView} from "./components/DetailNoteView";
 
 interface AuthorPageProps {
   navigation: any;
@@ -50,7 +51,6 @@ export const AuthorPage = () => {
   const loadAuthors = async (link: string) => {
     const authorsInResponse: Page<AuthorEmbeddedContainer<Author>> =
       await new Promise<Page<AuthorEmbeddedContainer<Author>>>(resolve => {
-        console.log(link)
         axios
           .get(fixProtocol(link.replace("?page=0","/authors?page=0")))
           .then(resp => resolve(resp.data))
@@ -96,6 +96,7 @@ export const AuthorPage = () => {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={AuthorView} name="Overview" />
       <Stack.Screen name={'Detailansicht'} component={DetailAuthorView} />
+      <Stack.Screen name={'DetailansichtNote'} component={DetailNoteView} />
     </Stack.Navigator>
   );
 };

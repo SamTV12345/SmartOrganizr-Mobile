@@ -1,16 +1,5 @@
-project.ext.envConfigFiles = [
-  release: ".env.production",
-  debug: ".env.development",
-  developmentrelease: ".env.development",
-]
-
-
-
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
-apply from: project(":react-native-config").projectDir.getPath() + "/dotenv.gradle"
-
-
 
 import com.android.build.OutputFile
 
@@ -111,8 +100,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        resValue "string", "build_config_package", "com.smartorganizrmobile"
-        manifestPlaceholders = [label: 'SmartorganizrMobile']
     }
 
     splits {
@@ -134,22 +121,14 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            manifestPlaceholders = [label: 'SmartOrganizr Debug']
-            matchingFallbacks = ['debug', 'release']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
-            manifestPlaceholders = [label: 'SmartOrganizr Prod']
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
-        developmentrelease {
-            initWith debug
-            applicationIdSuffix ".development"
-            manifestPlaceholders = [label: 'SmartOrganizr Dev']
-          }
     }
 
     // applicationVariants are e.g. debug, release

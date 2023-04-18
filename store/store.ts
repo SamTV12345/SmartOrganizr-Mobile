@@ -1,11 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
 import commonReducer from '../slices/CommonSlice';
 import authorReducer from '../slices/AuthorSlice';
+import noteReducer from '../slices/NoteSlice';
 
 export const store = configureStore({
   reducer: {
     commonReducer,
     authorReducer,
+    noteReducer
   },
 });
 

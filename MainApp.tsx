@@ -22,12 +22,18 @@ export const MainApp = () => {
         </Icon>
     }
 
+    const getNotesIcon: ((props: {focused: boolean, color: string, size: number}) => React.ReactNode) | undefined = ({ focused, color, size }) => {
+        return <Icon style={{width:size, height: size}}>
+                <Path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+        </Icon>
+    }
+
 
     return (
         <Tab.Navigator>
             <Tab.Screen name="Autor:in" component={AuthorPage} options={{headerShown: false,tabBarIcon:getPersonIcon}} />
-            <Tab.Screen name="Settings" component={SettingsScreen} options={{headerShown: false, tabBarIcon:getSettingsIcon}}/>
-            <Tab.Screen name="Settings2" component={SettingsScreen2} options={{headerShown: false}}/>
+            <Tab.Screen name="Noten" component={SettingsScreen} options={{headerShown: false,tabBarIcon: getNotesIcon}}/>
+            <Tab.Screen name="Misc" component={SettingsScreen2} options={{headerShown: false,  tabBarIcon:getSettingsIcon}}/>
         </Tab.Navigator>
     )
 }

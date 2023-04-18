@@ -33,8 +33,6 @@ export const KeycloakLoginComponent: FC<KeycloakLoginComponentProp> = () => {
   const keycloakConfig = useAppSelector(state=>state.commonReducer.keycloakConfig)
   const [state, setState] = useState<RNKeycloak>(() => new RNKeycloak({url: '<url>', clientId: 'clientId', realm: '<realm>'}),);
 
-  console.log(keycloakConfig)
-  const loginURL = useAppSelector(state => state.commonReducer.loginURL);
 
   const styles = StyleSheet.create({
     fullScreen: {
@@ -50,13 +48,6 @@ export const KeycloakLoginComponent: FC<KeycloakLoginComponentProp> = () => {
   });
 
   useEffect(() => {
-    if (keycloakConfig !== undefined) {
-      console.log("SEtting state")
-
-    }
-  }, [keycloakConfig])
-
-  useEffect(() => {
 
     doLogin();
   }, [state]);
@@ -66,7 +57,6 @@ export const KeycloakLoginComponent: FC<KeycloakLoginComponentProp> = () => {
       const res = await InAppBrowser.isAvailable();
       if (res) {
         keycloak.login().then(c => {
-          console.log(keycloak.token);
           axios.defaults.headers.Authorization = `Bearer ${keycloak.token}`;
           axios.defaults.headers['Content-Type'] = 'application/json';
           dispatch(setAccessToken(keycloak.token as string));
@@ -75,13 +65,13 @@ export const KeycloakLoginComponent: FC<KeycloakLoginComponentProp> = () => {
     }
   }
 
-  useEffect(() => {
-    if (accessToken.length !== 0) {
-      console.log('Access token nicht 0');
-    }
-    console.log('Access Token ist' + accessToken.length);
-    console.log(accessToken);
-  }, [accessToken]);
+  if (axios.defaults.headers.Authorization === undefined) {
+    return (
+        <View style={styles.widthHeigh}>
+          <Text>Loading...</Text>
+        </View>
+    );
+  }
 
 
   return (

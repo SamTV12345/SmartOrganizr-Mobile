@@ -4,7 +4,7 @@ import {Author} from "../models/Author";
 import {useAppDispatch} from "../store/hooks";
 import {setAuthor} from "../slices/AuthorSlice";
 import {Path} from "react-native-svg";
-import { pure } from 'recompose';
+import {NoteItem} from "../models/NoteItem";
 
 interface ListItemProps {
     item: Author,
