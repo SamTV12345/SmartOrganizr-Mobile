@@ -1,4 +1,4 @@
-import {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {View, Text, Stack} from 'native-base';
 import {useAppDispatch, useAppSelector} from '../store/hooks';
 import {DarkTheme, NavigationContainer} from '@react-navigation/native';
@@ -12,29 +12,57 @@ import {
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import {setAccessToken} from '../slices/CommonSlice';
 import axios from 'axios';
+import {BaseURLSetter} from "./BaseURLSetter";
+import {StyleSheet} from "react-native";
+import {MainApp} from "../MainApp";
 
-interface KeycloakLoginComponentProps {
+export interface KeycloakLoginComponentProps {
   issuer: string;
   clientId: string;
   realm: string;
 }
 
-export const KeycloakLoginComponent: FC<KeycloakLoginComponentProps> = ({
-  issuer,
-  realm,
-  clientId,
-}) => {
+interface KeycloakLoginComponentProp{
+
+}
+
+export const KeycloakLoginComponent: FC<KeycloakLoginComponentProp> = () => {
   const accessToken = useAppSelector(state => state.commonReducer.accessToken);
   const {keycloak} = useKeycloak();
   const dispatch = useAppDispatch();
+  const keycloakConfig = useAppSelector(state=>state.commonReducer.keycloakConfig)
+  const [state, setState] = useState<RNKeycloak>(() => new RNKeycloak({url: '<url>', clientId: 'clientId', realm: '<realm>'}),);
+
+  console.log(keycloakConfig)
+  const loginURL = useAppSelector(state => state.commonReducer.loginURL);
+
+  const styles = StyleSheet.create({
+    fullScreen: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    widthHeigh: {
+      width: '100%',
+      height: '100%',
+    },
+  });
 
   useEffect(() => {
-    console.log(keycloak);
+    if (keycloakConfig !== undefined) {
+      console.log("SEtting state")
+
+    }
+  }, [keycloakConfig])
+
+  useEffect(() => {
+
     doLogin();
-  }, [keycloak]);
+  }, [state]);
 
   const doLogin = async () => {
-    if (keycloak && !keycloak.token) {
+    if (keycloak) {
       const res = await InAppBrowser.isAvailable();
       if (res) {
         keycloak.login().then(c => {
@@ -45,22 +73,6 @@ export const KeycloakLoginComponent: FC<KeycloakLoginComponentProps> = ({
         });
       }
     }
-  };
-
-  function SettingsScreen() {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Settings!</Text>
-      </View>
-    );
-  }
-
-  function SettingsScreen2() {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Settings!</Text>
-      </View>
-    );
   }
 
   useEffect(() => {
@@ -71,15 +83,11 @@ export const KeycloakLoginComponent: FC<KeycloakLoginComponentProps> = ({
     console.log(accessToken);
   }, [accessToken]);
 
-  const Tab = createBottomTabNavigator();
 
   return (
-    <NavigationContainer theme={DarkTheme}>
-      <Tab.Navigator>
-        <Tab.Screen name="Autor*in" component={AuthorPage} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-        <Tab.Screen name="Settings2" component={SettingsScreen2} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
+
+        <View style={styles.widthHeigh}>
+          <MainApp/>
+        </View>
+  )
 };

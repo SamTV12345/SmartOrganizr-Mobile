@@ -11,7 +11,8 @@ interface CommonProps {
     authors: Page<AuthorEmbeddedContainer<Author>>|undefined,
     baseURL:string,
     keycloak:  string,
-    loginURL: string
+    loginURL: string,
+    authorSearchText:string
 }
 
 const initialState: CommonProps = {
@@ -20,7 +21,8 @@ const initialState: CommonProps = {
     authors: undefined,
     baseURL:'',
     keycloak: JSON.stringify(new RNKeycloak({realm: "master", url:"", clientId:'website'})),
-    loginURL:''
+    loginURL:'',
+    authorSearchText: ''
 }
 
 export const CommonSlice = createSlice({
@@ -42,10 +44,13 @@ export const CommonSlice = createSlice({
             },
             setLoginURL: (state, action:PayloadAction<string>)=>{
                 state.loginURL = action.payload
+            },
+            setAuthorSearchText: (state, action:PayloadAction<string>)=>{
+                state.authorSearchText = action.payload
             }
         }
 })
 
 
-export const {setAccessToken, setKeycloakConfig, setAuthorPage, setBaseURL, setLoginURL} = CommonSlice.actions
+export const {setAccessToken, setAuthorSearchText, setKeycloakConfig, setAuthorPage, setBaseURL, setLoginURL} = CommonSlice.actions
 export default CommonSlice.reducer

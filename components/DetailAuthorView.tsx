@@ -69,34 +69,34 @@ export const DetailAuthorView:FC<DetailAuthorViewProps> = ({ route, navigation }
         }},[route.params.id])
 
     return <View>
-        <Center>
-            <Heading color="white">Author*in {selectedAuthor?.name}</Heading>
+        <Center style={{marginTop: '5%'}}>
+            <Heading>{selectedAuthor?.name}</Heading>
     </Center>
         <Container margin={2}>
 
             <VStack space={2}>
                 <HStack space={2}>
                     <FormControl>
-                        <FormControl.Label color="white">Name</FormControl.Label>
-                        <Input color={"white"} placeholder="Name des Authors" isFullWidth value={selectedAuthor?.name}
+                        <FormControl.Label>Name</FormControl.Label>
+                        <Input placeholder="Name des Authors" isFullWidth value={selectedAuthor?.name}
                                onChangeText={v=>{dispatch(setAuthorName(v))}} />
                     </FormControl>
                 </HStack>
                 <HStack space={2}>
                     <FormControl>
                         <FormControl.Label color="white">Weitere Infos</FormControl.Label>
-                        <Input color={"white"} placeholder="Extra Information" isFullWidth value={selectedAuthor?.extraInformation}
+                        <Input placeholder="Extra Information" isFullWidth value={selectedAuthor?.extraInformation}
                                onChangeText={v=>{dispatch(setAuthorExtraInformation(v))}} />
                     </FormControl>
                 </HStack>
                 <HStack space={2}>
                     <FormControl>
-                        <Heading color={"white"}>Noten des Authors</Heading>
+                        <Heading>Noten des Authors</Heading>
                         {
                             selectedAuthorsNotes&&selectedAuthorsNotes.map((note, index)=> <React.Fragment key={index+"Index"}>
                             <HStack>
-                                <Text fontSize={"xl"} key={index} color={"white"}>#{index+1}- </Text>
-                                <Text fontSize={"xl"} key={index+"name"} color={"white"}>{note.title}</Text>
+                                <Text fontSize={"xl"} key={index}>#{index+1}- </Text>
+                                <Text fontSize={"xl"} key={index+"name"}>{note.title}</Text>
                             </HStack>
 
                             </React.Fragment>)

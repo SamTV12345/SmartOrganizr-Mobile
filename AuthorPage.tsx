@@ -6,11 +6,13 @@ import {Author} from './models/Author';
 import axios from 'axios';
 import {setAuthorPage, setBaseURL} from './slices/CommonSlice';
 import {mergeAuthors} from './utils/AuthorUtilList';
-import {View, FlatList} from 'react-native';
-import {ListItem} from './components/ListItem';
-import {createStackNavigator} from '@react-navigation/stack';
+import {View, FlatList, Animated} from 'react-native';
 import {DetailAuthorView} from './components/DetailAuthorView';
 import {fixProtocol} from './utils/ProtocolUtils';
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {ScrollView, Text} from "native-base";
+import ListItem from "./components/ListItem";
+import {SearchBarHeader} from "./components/SearchBarHeader";
 
 interface AuthorPageProps {
   navigation: any;
@@ -24,16 +26,15 @@ export const AuthorPage = () => {
   );
   const accessToken = useAppSelector(state => state.commonReducer.accessToken);
   const loginURL = useAppSelector(state => state.commonReducer.loginURL);
-  const Stack = createStackNavigator();
+  const Stack = createNativeStackNavigator();
 
   useEffect(() => {
-    if (authors === undefined && accessToken && keycloakConfig) {
+    if (authors === undefined && keycloakConfig) {
       const authorLink =
         keycloakConfig._links.author.href.substring(
           0,
           keycloakConfig._links.author.href.lastIndexOf('/'),
         ) + '?page=0';
-      console.log(authorLink);
       dispatch(
         setBaseURL(
           keycloakConfig._links.author.href.substring(
@@ -69,14 +70,14 @@ export const AuthorPage = () => {
   const AuthorView: FC<AuthorPageProps> = ({navigation}) => {
     return (
       <View>
+        <Text style={{fontSize: 20, textAlign:'center', fontWeight:"500", marginTop: '5%', marginBottom: '4%'}}>Authoren</Text>
         {authors && (
-          <FlatList
-            data={authors._embedded.authorRepresentationModelList}
-            ItemSeparatorComponent={() => (
-              <View
-                style={{height: 0.5, width: '100%', backgroundColor: '#C8C8C8'}}
-              />
-            )}
+            <FlatList ListHeaderComponent={<SearchBarHeader/>} onScrollBeginDrag={(e) => {
+            console.log("scrolling")
+          }
+          }
+            data={authors._embedded?authors._embedded.authorRepresentationModelList: []}
+
             onEndReached={() => {
               if (authors._links.next !== undefined) {
                 loadAuthors(authors._links.next.href);
@@ -92,7 +93,7 @@ export const AuthorPage = () => {
   };
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={AuthorView} name="Overview" />
       <Stack.Screen name={'Detailansicht'} component={DetailAuthorView} />
     </Stack.Navigator>
