@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
 jobs:
   install-and-test:
     runs-on: ubuntu-latest
@@ -21,11 +23,20 @@ jobs:
           npm install
       - name: Build Android Release
         run: |
-          
           cd android && chmod +x ./gradlew && ./gradlew assembleRelease
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: app-release.apk
           path: android/app/build/outputs/apk/release/
+      - name: zip
+        run: zip -r smartorganizr-mobile.zip android/app/build/outputs/apk/release/
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            smartorganizr-mobile.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
