@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface SmartOrganizrMobileTests : XCTestCase
+@interface SMODevTests : XCTestCase
 
 @end
 
-@implementation SmartOrganizrMobileTests
+@implementation SMODevTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

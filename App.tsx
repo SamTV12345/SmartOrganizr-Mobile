@@ -70,7 +70,7 @@ const AppProvider:FC<PropsWithChildren> = () => {
                                        if (tokens.refreshToken){
                                          axios.defaults.headers.Authorization = `Bearer ${tokens.refreshToken}`;
                                        }}}
-      initOptions={{redirectUri: 'smartorganizr-mobile://Homepage'}}>
+      initOptions={{redirectUri: 'smartorganizr-mobile-dev://Homepage'}}>
     <NativeBaseProvider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>

@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.smartorganizrmobile"
+    namespace "com.smartorganizr.dev"
     defaultConfig {
-        applicationId "com.smartorganizrmobile"
+        applicationId "com.smartorganizr.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

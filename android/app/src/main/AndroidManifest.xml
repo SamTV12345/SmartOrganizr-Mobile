@@ -10,8 +10,7 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="smartorganizr.schwanzer.online"/>
-        <data android:scheme="smartorganizr-mobile"/>
+        <data android:scheme="smartorganizr-mobile-dev"/>
       </intent-filter>
     </activity>
   </application>

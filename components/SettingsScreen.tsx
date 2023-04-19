@@ -61,10 +61,7 @@ export const SettingsScreen = () => {
             <View>
                 <Text style={{fontSize: 20, textAlign:'center', fontWeight:"500", marginTop: '5%', marginBottom: '4%'}}>Noten</Text>
                     {searchedElements && (
-                        <FlatList ListHeaderComponent={<SearchBarHeader/>} onScrollBeginDrag={(e) => {
-                            console.log("scrolling")
-                        }
-                        }
+                        <FlatList ListHeaderComponent={<SearchBarHeader/>}
                                   data={searchedElements._embedded?searchedElements._embedded.noteRepresentationModelList: []}
 
                                   onEndReached={() => {
