@@ -2,11 +2,13 @@ import {NoteItem} from "../models/NoteItem";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface NoteSliceProps {
-    selectedNote: NoteItem|undefined
+    selectedNote: NoteItem|undefined,
+    searchedNoteText: string|undefined
 }
 
 const initialState: NoteSliceProps = {
-    selectedNote: undefined
+    selectedNote: undefined,
+    searchedNoteText: ''
 }
 
 export const noteSlice = createSlice({
@@ -15,9 +17,12 @@ export const noteSlice = createSlice({
     reducers: {
         setNote: (state, action:PayloadAction<NoteItem>)=>{
             state.selectedNote = action.payload
+        },
+        setNoteText: (state, action:PayloadAction<string>)=>{
+            state.searchedNoteText = action.payload
         }
     }
 })
 
-export const {setNote} = noteSlice.actions
+export const {setNote, setNoteText} = noteSlice.actions
 export default noteSlice.reducer

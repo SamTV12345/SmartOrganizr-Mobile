@@ -67,8 +67,8 @@ const AppProvider:FC<PropsWithChildren> = () => {
   return <ReactNativeKeycloakProvider autoRefreshToken={true}
       authClient={state}
                                       onTokens={(tokens) => {
-                                       if (tokens.refreshToken){
-                                         axios.defaults.headers.Authorization = `Bearer ${tokens.refreshToken}`;
+                                       if (tokens.idToken){
+                                         axios.defaults.headers.Authorization = `Bearer ${tokens.idToken}`;
                                        }}}
       initOptions={{redirectUri: 'smartorganizr-mobile-dev://Homepage'}}>
     <NativeBaseProvider>

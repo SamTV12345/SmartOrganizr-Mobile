@@ -6,17 +6,18 @@ import {Path} from "react-native-svg";
 import {Author} from "../models/Author";
 import {NoteItem} from "../models/NoteItem";
 import {setNote} from "../slices/NoteSlice";
+import {useLinkTo, useNavigation} from "@react-navigation/native";
 
 type NoteListItemProps = {
-    item: NoteItem,
-    navigate: any
+    item: NoteItem
 }
 
-export const NoteListItem:FC<NoteListItemProps>  = ({item, navigate})=> {
+export const NoteListItem:FC<NoteListItemProps>  = ({item})=> {
     const dispatch = useAppDispatch()
+    const linkTo = useNavigation()
 
     return   <Pressable onPress={() =>  {
-        navigate.navigate('DetailansichtNote', {id: item.id})
+        linkTo.navigate('DetailansichtNote', {id: item.id, screen: 'NoteD'})
         dispatch(setNote(item))
     } }>
     <View style={{borderColor:'#000', borderBottomWidth: 2}}/>

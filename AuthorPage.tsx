@@ -93,7 +93,6 @@ export const AuthorPage = () => {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={AuthorView} name="Overview" />
       <Stack.Screen name={'Detailansicht'} component={DetailAuthorView} />
-      <Stack.Screen name={'DetailansichtNote'} component={DetailNoteView} />
     </Stack.Navigator>
   );
 };

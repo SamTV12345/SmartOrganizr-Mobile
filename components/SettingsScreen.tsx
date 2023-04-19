@@ -7,18 +7,21 @@ import {NoteItem} from "../models/NoteItem";
 import {setNotesSearched} from "../slices/CommonSlice";
 import {FlatList} from "react-native";
 import {SearchBarHeader} from "./SearchBarHeader";
-import ListItem from "./ListItem";
 import {NoteListItem} from "./NoteListItem";
 import {useNavigation} from "@react-navigation/native";
 import {useEffect} from "react";
+import {NoteSearchBarHeader} from "./NoteSearchBarHeader";
+import {createStackNavigator} from "@react-navigation/stack";
+import {DetailNoteView} from "./DetailNoteView";
+
+const Stack = createStackNavigator()
 
 export const SettingsScreen = () => {
     const searchedElements = useAppSelector(state=>state.commonReducer.elementsSearched)
     const dispatch = useAppDispatch()
-    const navigation = useNavigation()
     const loginURL = useAppSelector(state=>state.commonReducer.loginURL)
-
     useEffect(()=>{
+        if(searchedElements===undefined)
         loadNotesInitial(loginURL+`/api/v1/elements/notes?page=0`)
     },[])
 
@@ -58,10 +61,11 @@ export const SettingsScreen = () => {
 
 
         return (
+
             <View>
                 <Text style={{fontSize: 20, textAlign:'center', fontWeight:"500", marginTop: '5%', marginBottom: '4%'}}>Noten</Text>
                     {searchedElements && (
-                        <FlatList ListHeaderComponent={<SearchBarHeader/>}
+                        <FlatList ListHeaderComponent={<NoteSearchBarHeader/>}
                                   data={searchedElements._embedded?searchedElements._embedded.noteRepresentationModelList: []}
 
                                   onEndReached={() => {
@@ -70,10 +74,18 @@ export const SettingsScreen = () => {
                                       }
                                   }}
                                   renderItem={({item}) => (
-                                      <NoteListItem item={item} navigate={navigation} />
+                                      <NoteListItem item={item} />
                                   )}
                         />
                     )}
                 </View>
         )
+}
+
+
+export const NoteStackNavigator = () => {
+    return <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name={'NotenD'} component={SettingsScreen} />
+        <Stack.Screen name={'DetailansichtNote'} component={DetailNoteView} />
+    </Stack.Navigator>
 }

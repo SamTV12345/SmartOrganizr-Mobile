@@ -1,12 +1,14 @@
 import {AuthorPage} from "./AuthorPage";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {SettingsScreen2} from "./components/SetttingsScreen";
-import {SettingsScreen} from "./components/SettingsScreen";
+import {NoteStackNavigator, SettingsScreen} from "./components/SettingsScreen";
 import { Icon } from "native-base";
 import {Path} from "react-native-svg";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const Tab = createBottomTabNavigator();
+
 export const MainApp = () => {
-    const Tab = createBottomTabNavigator();
 
     const getPersonIcon: ((props: {focused: boolean, color: string, size: number}) => React.ReactNode) | undefined = ({ focused, color, size }) => {
 
@@ -30,9 +32,9 @@ export const MainApp = () => {
 
 
     return (
-        <Tab.Navigator>
+        <Tab.Navigator initialRouteName="Autor:in" screenOptions={{tabBarActiveBackgroundColor: 'tomato', tabBarActiveTintColor:'white', tabBarInactiveBackgroundColor: 'white'}}>
             <Tab.Screen name="Autor:in" component={AuthorPage} options={{headerShown: false,tabBarIcon:getPersonIcon}} />
-            <Tab.Screen name="Noten" component={SettingsScreen} options={{headerShown: false,tabBarIcon: getNotesIcon}}/>
+            <Tab.Screen name="Noten" component={NoteStackNavigator} options={{headerShown: false,tabBarIcon: getNotesIcon}}/>
             <Tab.Screen name="Misc" component={SettingsScreen2} options={{headerShown: false,  tabBarIcon:getSettingsIcon}}/>
         </Tab.Navigator>
     )

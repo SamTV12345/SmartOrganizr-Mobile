@@ -1,5 +1,4 @@
 import {Button, Center, FormControl, Input, Stack, VStack} from "native-base";
-import {KeycloakLoginComponent} from "./KeycloakLoginComponent";
 import React, {useEffect, useState} from "react";
 import {PublicModel} from "../models/PublicModel";
 import axios, {AxiosResponse} from "axios";
@@ -7,7 +6,6 @@ import {getStorageKey, setStorageKey} from "../storage/SetStorageKey";
 import {useAppDispatch, useAppSelector} from "../store/hooks";
 import {setKeycloakConfig, setLoginURL} from "../slices/CommonSlice";
 import {useLinkTo, useNavigation} from "@react-navigation/native";
-import {RNKeycloak} from "@react-keycloak/native";
 
 export const BaseURLSetter = () => {
     const loginURL = useAppSelector(state=>state.commonReducer.loginURL)

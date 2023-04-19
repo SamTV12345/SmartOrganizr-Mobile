@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {View, Text, Stack} from 'native-base';
 import {useAppDispatch, useAppSelector} from '../store/hooks';
-import {DarkTheme, NavigationContainer} from '@react-navigation/native';
+import {DarkTheme, NavigationContainer, useLinkTo, useNavigation} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {AuthorPage} from '../AuthorPage';
 import {
@@ -32,7 +32,7 @@ export const KeycloakLoginComponent: FC<KeycloakLoginComponentProp> = () => {
   const dispatch = useAppDispatch();
   const keycloakConfig = useAppSelector(state=>state.commonReducer.keycloakConfig)
   const [state, setState] = useState<RNKeycloak>(() => new RNKeycloak({url: '<url>', clientId: 'clientId', realm: '<realm>'}),);
-
+  const navigate = useLinkTo()
 
   const styles = StyleSheet.create({
     fullScreen: {
@@ -60,7 +60,9 @@ export const KeycloakLoginComponent: FC<KeycloakLoginComponentProp> = () => {
           axios.defaults.headers.Authorization = `Bearer ${keycloak.token}`;
           axios.defaults.headers['Content-Type'] = 'application/json';
           dispatch(setAccessToken(keycloak.token as string));
-        });
+        }).catch(e=>{
+          navigate('/Login')
+        })
       }
     }
   }
@@ -74,10 +76,6 @@ export const KeycloakLoginComponent: FC<KeycloakLoginComponentProp> = () => {
   }
 
 
-  return (
 
-        <View style={styles.widthHeigh}>
-          <MainApp/>
-        </View>
-  )
+  return (<MainApp/>)
 };

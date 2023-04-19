@@ -23,6 +23,7 @@ jobs:
         run: |
           npx react-native-rename "SmartOrganizr" -b "com.smartorganizr.mobile" --skipGitStatusCheck
           sed -i 's/smartorganizr-mobile-dev/smartorganizr-mobile/g' App.tsx
+          npx uri-scheme add smartorganizr-mobile --android
           cd android && chmod +x ./gradlew && ./gradlew assembleRelease
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
