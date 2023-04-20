@@ -13,6 +13,7 @@ import {useEffect} from "react";
 import {NoteSearchBarHeader} from "./NoteSearchBarHeader";
 import {createStackNavigator} from "@react-navigation/stack";
 import {DetailNoteView} from "./DetailNoteView";
+import {PDFViewer} from "./PDFViewer";
 
 const Stack = createStackNavigator()
 
@@ -33,6 +34,7 @@ export const SettingsScreen = () => {
                     console.log(error)
                 })})
         if(notesInPage !== undefined){
+            console.log(notesInPage._embedded.noteRepresentationModelList[3])
             dispatch(setNotesSearched(notesInPage))
         }
     }
@@ -47,6 +49,7 @@ export const SettingsScreen = () => {
                     console.log(error)
                 })})
         if(notesInPage !== undefined){
+            console.log(notesInPage)
             dispatch(setNotesSearched({
                 _embedded: {
                     noteRepresentationModelList:[...searchedElements._embedded.noteRepresentationModelList,...notesInPage._embedded.noteRepresentationModelList]
@@ -87,5 +90,6 @@ export const NoteStackNavigator = () => {
     return <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name={'NotenD'} component={SettingsScreen} />
         <Stack.Screen name={'DetailansichtNote'} component={DetailNoteView} />
+        <Stack.Screen name={'PDFViewer'} component={PDFViewer} />
     </Stack.Navigator>
 }

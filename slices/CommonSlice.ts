@@ -6,6 +6,7 @@ import {Author} from "../models/Author";
 import {RNKeycloak} from "@react-keycloak/native";
 import {NoteItem} from "../models/NoteItem";
 import {ElementEmbeddedContainer} from "../models/ElementEmbeddedContainer";
+import Pdf, {Source} from "react-native-pdf";
 
 interface CommonProps {
     accessToken: string,
@@ -15,7 +16,8 @@ interface CommonProps {
     keycloak:  string,
     loginURL: string,
     authorSearchText:string,
-    elementsSearched: Page<ElementEmbeddedContainer<NoteItem>>| undefined
+    elementsSearched: Page<ElementEmbeddedContainer<NoteItem>>| undefined,
+    selectedPDF:Source|undefined
 }
 
 const initialState: CommonProps = {
@@ -26,7 +28,8 @@ const initialState: CommonProps = {
     keycloak: JSON.stringify(new RNKeycloak({realm: "master", url:"", clientId:'website'})),
     loginURL:'',
     authorSearchText: '',
-    elementsSearched: undefined
+    elementsSearched: undefined,
+    selectedPDF:undefined
 }
 
 export const CommonSlice = createSlice({
@@ -54,10 +57,15 @@ export const CommonSlice = createSlice({
             },
             setNotesSearched:(state, action)=>{
                 state.elementsSearched = action.payload
+            },
+            setSelectedPDF:(state, action)=>{
+                state.selectedPDF = {
+                    uri:action.payload
+                }
             }
         }
 })
 
 
-export const {setAccessToken,setNotesSearched, setAuthorSearchText, setKeycloakConfig, setAuthorPage, setBaseURL, setLoginURL} = CommonSlice.actions
+export const {setAccessToken,setSelectedPDF,setNotesSearched, setAuthorSearchText, setKeycloakConfig, setAuthorPage, setBaseURL, setLoginURL} = CommonSlice.actions
 export default CommonSlice.reducer
